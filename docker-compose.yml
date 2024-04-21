@@ -45,7 +45,7 @@ services:
     depends_on:
       - vproapp
     ports:
-      - "81:80"
+      - "80:80"
 
 volumes:
   vprodbdata: {}
