@@ -34,7 +34,7 @@ pipeline {
                 }
             }
         }
-        stage('Test'){
+        stage('Test') {
             steps {
                 sh 'mvn -s settings.xml test'
             }
@@ -47,7 +47,7 @@ pipeline {
                 }
             }
         }
-        stage('Checkstyle Ananlysis'){
+        stage('Checkstyle Ananlysis') {
             steps {
                 sh 'mvn -s settings.xml checkstyle:checkstyle'
             }
@@ -61,9 +61,9 @@ pipeline {
             }
         }
 
-        stage('SonarQube Analysis'){
-            environment{
-                scannerHome= tool "${}"
+        stage('SonarQube Analysis') {
+            environment {
+                scannerHome = tool "${SONAR_SCANNER}"
             }
             steps {
                 withSonarQubeEnv("${SONAR_SERVER}") {
@@ -75,7 +75,6 @@ pipeline {
                    -Dsonar.junit.reportsPath=target/surefire-reports/ \
                    -Dsonar.jacoco.reportsPath=target/jacoco.exec \
                    -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml'''
-
                 }
             }
             post {
