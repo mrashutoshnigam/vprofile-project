@@ -93,8 +93,8 @@ pipeline {
                 }
             }
         }
-        stage('Publish Artifact'){
-            steps{
+        stage('Publish Artifact') {
+            steps {
                 nexusArtifactUploader(
                   nexusVersion: 'nexus3',
                   protocol: 'http',
@@ -110,8 +110,15 @@ pipeline {
                      type: 'war']
                   ]
                 )
-
             }
+        }
+    }
+    post {
+        always {
+            echo 'Slack Notifications.'
+            slackSend channel: '#jenkinscicd',
+                color: COLOR_MAP[currentBuild.currentResult],
+                message: "*${currentBuild.currentResult}:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} \n More info at: ${env.BUILD_URL}"
         }
     }
 }
