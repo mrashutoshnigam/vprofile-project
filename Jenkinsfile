@@ -14,7 +14,7 @@ pipeline {
         NEXUSIP = '172.31.50.16'
         NEXUSPORT = '8081'
         NEXUS_GRP_REPO = 'vpro-maven-group'
-        NEXUS_LOGIN = 'nexus_login'
+        NEXUS_LOGIN = 'nexuslogin'
         SONAR_SERVER = 'sonarserver'
         SONAR_SCANNER = 'sonarscanner'
     }
@@ -91,6 +91,26 @@ pipeline {
                 timeout(time: 1, unit: 'HOURS') {
                     waitForQualityGate abortPipeline: true
                 }
+            }
+        }
+        stage('Publish Artifact'){
+            steps{
+                nexusArtifactUploader(
+                  nexusVersion: 'nexus3',
+                  protocol: 'http',
+                  nexusUrl: "${NEXUSIP}:${NEXUSPORT}",
+                  groupId: 'QA',
+                  version: "${env.BUILD_ID}-${env.BUILD_TIMESTAMP}",
+                  repository: "${RELEASE_REPO}",
+                  credentialsId: "${NEXUS_LOGIN}",
+                  artifacts: [
+                    [artifactId: 'vproapp',
+                     classifier: '',
+                     file: 'target/vprofile-v2.war',
+                     type: 'war']
+                  ]
+                )
+
             }
         }
     }
