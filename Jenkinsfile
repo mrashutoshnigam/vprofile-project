@@ -47,7 +47,7 @@ pipeline {
                     echo 'Test Success'
                 }
                 failure {
-                    echo 'Test Failed'
+                    echo 'Test Failed C'
                 }
             }
         }
