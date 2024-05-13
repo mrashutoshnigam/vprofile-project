@@ -1,12 +1,13 @@
 version: 0.2
-env: 
-  parameter-store:
-    CODEARTIFACT_AUTH_TOKEN: CODEARTIFACT_AUTH_TOKEN
+# env: 
+#   parameter-store:
+#     CODEARTIFACT_AUTH_TOKEN: CODEARTIFACT_AUTH_TOKEN
 phases:
   install:
     runtime-versions:
       java: corretto8
     commands:
+      - export CODEARTIFACT_AUTH_TOKEN=`aws codeartifact get-authorization-token --domain vprofile-central-store --domain-owner 637423393772 --region us-east-1 --query authorizationToken --output text`
       - cp ./settings.xml /root/.m2/settings.xml
   pre_build:
     commands:
